@@ -32,6 +32,30 @@ db.connect((err) => {
   }
 });
 
+/*
+서버가 http://localhost:3000에서 실행 중입니다.
+MySQL 연결 성공
+데이터 조회 성공
+[
+  {
+    id: 1,
+    title: 'MySQL',
+    description: 'MySQL is ...',
+    created: 2025-01-25T10:45:40.000Z,
+    author: 'egoing',
+    profile: 'developer'
+  },
+  {
+    id: 2,
+    title: 'TestData',
+    description: 'Test description',
+    created: 2025-01-25T11:20:32.000Z,
+    author: 'Yeobi',
+    profile: 'Test profile'
+  }
+]
+*/
+
 // 데이터 가져오기 API
 app.get('/data', (req, res) => {
   const query = 'SELECT * FROM your_table_name'; // 원하는 쿼리 작성
