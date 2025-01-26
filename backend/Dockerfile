@@ -1,10 +1,17 @@
+# backend/Dockerfile
 FROM node:22-alpine
 
-WORKDIR /app
-COPY package*.json ./backend/
-RUN npm install --prefix ./backend
+WORKDIR /usr/src/app
 
-COPY . ./backend
+# package.json, package-lock.json 복사
+COPY package*.json ./
 
+# 패키지 설치
+RUN npm install --production
+
+# 소스 복사
+COPY . .
+
+# 서버 구동
 EXPOSE 3000
-CMD ["npm", "start", "--prefix", "./backend"]
+CMD ["node", "src/index.js"]
