@@ -71,6 +71,15 @@ jobs:
             eval $(ssh-agent -s)
             ssh-add deploy_key.pem
 
+      - name: Set Environment Variables (TAG, REGISTRY_URL)
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "TAG=latest" >> $GITHUB_ENV
+          else
+            echo "TAG=dev" >> $GITHUB_ENV
+          fi
+          echo "REGISTRY_URL=${{ secrets.REGISTRY_URL }}" >> $GITHUB_ENV
+
       - name: Deploy to server
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << EOF
