@@ -3,11 +3,9 @@ name: CI/CD Pipeline (Backend)
 on:
   push:
     branches:
-      - main
       - develop
   pull_request:
     branches:
-      - main
       - develop
     types:
       - closed
@@ -79,8 +77,8 @@ jobs:
             rm -rf /path/to/O3O-backend || true
             git clone git@github.com:Team-HY-KTJ/O3O-backend.git /path/to/O3O-backend
             cd /path/to/O3O-backend
-
-            git pull origin main || true
+            git checkout develop
+            git pull origin develop || true
 
             echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | \
               docker login -u "doctl" --password-stdin ${{ secrets.REGISTRY_URL }}
