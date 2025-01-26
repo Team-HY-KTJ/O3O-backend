@@ -82,7 +82,7 @@ jobs:
             export TAG=${{ env.TAG }}
             export REGISTRY_URL=${{ env.REGISTRY_URL }}
 
-            cat > .env << EOT
+          cat > .env << EOT
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
             DB_USER=${{ secrets.DB_USER }}
@@ -90,7 +90,7 @@ jobs:
             DB_DATABASE=${{ secrets.DB_DATABASE }}
             DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}
             PORT=${{ secrets.PORT }}
-            EOT
+          EOT
 
             docker-compose down || true
             docker-compose up -d --remove-orphans
