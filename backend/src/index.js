@@ -19,7 +19,7 @@ app.get('/balance', (req, res) => {
 
   console.log(`userid: ${userid}, serverid: ${serverid}`);
   
-  const query = `SELECT userid, balance FROM ${DB_TABLENAME} WHERE userid = ${userid} AND serverid = ${serverid}`;
+  const query = `SELECT user_id, balance FROM ${DB_TABLENAME} WHERE user_id = ${userid} AND server_id = ${serverid}`;
   db.query(query, (err, results) => {
     if (err) {
       console.error('데이터 조회 오류:', err);
