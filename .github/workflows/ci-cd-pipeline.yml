@@ -71,7 +71,7 @@ jobs:
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << EOF
             mkdir -p /path/to/O3O-BACKEND
-            cd /path/to/O3O-BACKEND || git clone https://github.com/your-repo/O3O-BACKEND.git /path/to/O3O-BACKEND
+            git clone https://github.com/your-repo/O3O-BACKEND.git /path/to/O3O-BACKEND
             cd /path/to/O3O-BACKEND
 
             git pull origin main || true
