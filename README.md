@@ -24,4 +24,4 @@ url에다가 `/balance`추가하고, parameter 전달 시 `{ params : { 변수�
 
 
 돌아오는 값은 json으로 오며, `res.data`로 받을 수 있음.
-`res.data.userid`, `res.data.balance`로 각각 string인 `userid`, integer인 `balance`를 받을 수 있음.
+`res.data.userid`, `res.data.balance`로 각각 string인 `userid`, integer인 `balance`를 받을 수 있음..
