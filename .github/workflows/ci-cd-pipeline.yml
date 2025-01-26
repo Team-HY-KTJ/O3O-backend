@@ -70,22 +70,19 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << EOF
-            # 프로젝트 디렉토리 생성 및 이동
             mkdir -p /path/to/O3O-BACKEND
             cd /path/to/O3O-BACKEND || git clone https://github.com/your-repo/O3O-BACKEND.git /path/to/O3O-BACKEND
             cd /path/to/O3O-BACKEND
-      
-            # 최신 코드 가져오기
+
             git pull origin main || true
-      
+
             echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | \
               docker login -u "doctl" --password-stdin ${{ secrets.REGISTRY_URL }}
-      
+
             export TAG=${{ env.TAG }}
             export REGISTRY_URL=${{ env.REGISTRY_URL }}
-      
-            # 환경 변수 파일 생성
-            cat <<EOT > .env
+
+            cat > .env << EOT
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
             DB_USER=${{ secrets.DB_USER }}
@@ -94,15 +91,15 @@ jobs:
             DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}
             PORT=${{ secrets.PORT }}
             EOT
-      
-            # 기존 컨테이너 중지 및 삭제 후 재시작
+
             docker-compose down || true
             docker-compose up -d --remove-orphans
-      
+
             docker logout ${{ secrets.REGISTRY_URL }} || true
             exit
           EOF
-      
+
+              
         
 
       - name: Cleanup SSH key
