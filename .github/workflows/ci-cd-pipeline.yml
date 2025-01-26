@@ -67,6 +67,12 @@ jobs:
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key.pem
             chmod 600 deploy_key.pem
 
+            # SSH 설정 및 GitHub 호스트 키 추가
+            mkdir -p ~/.ssh
+            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+            eval $(ssh-agent -s)
+            ssh-add deploy_key.pem
+
       - name: Deploy to server
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << EOF
