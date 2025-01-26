@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import db from './db.js';
 
 dotenv.config();
-const { DB_TABLENAME, PORT } = process.env;
+const { PORT } = process.env;
 
 const app = express();
 app.use(express.json());
@@ -15,7 +15,7 @@ app.get('/balance', (req, res) => {
 
   console.log(`userid: ${userid}, serverid: ${serverid}`);
   
-  const query = `SELECT user_id, balance FROM ${DB_TABLENAME} WHERE user_id = ? AND server_id = ?`;
+  const query = `SELECT user_id, balance FROM users WHERE user_id = ? AND server_id = ?`;
   db.query(query, [userid, serverid], (err, results) => {
     if (err) {
       console.error('데이터 조회 오류:', err);
@@ -29,7 +29,7 @@ app.get('/balance', (req, res) => {
       res.json(response);
     } else {
       console.log('사용자 없음, 새로 추가 중');
-      const insertQuery = `INSERT INTO ${DB_TABLENAME} (user_id, server_id, balance) VALUES (?, ?, 1000)`;
+      const insertQuery = `INSERT INTO users (user_id, server_id, balance) VALUES (?, ?, 1000)`;
       db.query(insertQuery, [userid, serverid], (insertErr) => {
         if (insertErr) {
           console.error('데이터 삽입 오류:', insertErr);
