@@ -45,4 +45,4 @@ const handleDisconnect = () => {
 
 handleDisconnect();
 
-export default { db };
+export default db;
