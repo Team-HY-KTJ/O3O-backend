@@ -69,7 +69,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << 'EOF'
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} << EOF
             # 프로젝트 디렉토리 생성 및 이동
             mkdir -p /path/to/O3O-BACKEND
             cd /path/to/O3O-BACKEND || git clone https://github.com/your-repo/O3O-BACKEND.git /path/to/O3O-BACKEND
