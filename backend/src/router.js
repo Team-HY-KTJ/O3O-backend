@@ -1,3 +1,19 @@
+/*
+
+router.js에 인식되도록 파일 작성하는 법
+routerRoot 폴더 내에 폴더 하나를 더 만들고 (ex. routerRoot\balance)
+거기서 .js파일 작성하는데, export에 route, router가 있도록
+ex. GETbalance.js
+export {route, router};
+
+route : 경로, router : Callback 함수
+
+ex)
+app.get(route, router)
+router.get(route, router)
+
+*/
+
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
