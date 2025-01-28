@@ -5,6 +5,41 @@ const route = '/balance';
 const router = express.Router();
 const { DB_TABLENAME } = process.env;
 
+/*
+    POST /balance/update
+
+    요청 예시
+    {
+        "userid": 1,
+        "serverid": 1,
+        "amount": 1000,
+        "reason": "출금"
+    }
+
+    응답 예시 (성공 시)
+    {
+        "userid": 1,
+        "balance": 1000
+    }
+
+    응답 예시 (실패 시)
+    {
+        "error": "유저를 찾을 수 없습니다. /balance 명령어를 통해 잔고를 먼저 초기화 해주세요."
+    }
+
+    
+    유저 잔액 수정 API
+    - userid: 사용자 ID
+    - serverid: 서버 ID
+    - amount: 수정할 금액 (출금은 음수, 입금은 양수)
+    - reason: 수정 사유 (로그 기록용)
+
+    유의 사항
+    - 현재는 사용자가 없을 경우 자동으로 추가하지는 않음.
+    - 현재는 수정 후 잔고가 0 미만이 되는 경우에 대한 처리는 없음.
+    - 사용자가 없을 경우 404 에러 반환하므로 먼저 /balance API를 통해 사용자를 추가하도록 안내 필요.
+*/
+
 router.post('/update',(req, res) => {
     const { userid, serverid, amount, reason } = req.body;
     if (!userid || !serverid || !amount || !reason) {

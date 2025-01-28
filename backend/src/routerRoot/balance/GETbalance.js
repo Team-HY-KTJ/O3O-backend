@@ -3,8 +3,28 @@ import db from '../../db.js';
 
 const route = '/balance';
 const router = express.Router();
-
 const { DB_TABLENAME } = process.env;
+
+/*
+    GET /balance?userid=1&serverid=1
+    쿼리로 사용자 ID(userid)와 서버 ID(serverid) 전달
+
+    응답 예시
+    {
+        "userid": 1,
+        "balance": 1000,
+        "newlyAdded": false
+    }
+    
+    유저 잔액 조회 API
+    - userid: 사용자 ID
+    - serverid: 서버 ID
+
+    유의 사항
+    - 사용자 ID와 서버 ID에 해당하는 사용자의 잔액 조회
+    - 사용자가 없을 경우 새로 추가하고 잔액 1000으로 초기화
+    - 조회 성공 시 newlyAdded는 false, 새로 추가 시 newlyAdded는 true
+*/
 
 router.get('',(req, res) => {
     const { userid, serverid } = req.query;
