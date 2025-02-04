@@ -33,11 +33,13 @@ async function GetRouters() {
 
         for (const file of files.filter((file) => file.endsWith('.js'))) {
             try{
-                const { route: moduleRoute, router: moduleRouter } = await import('../' + path.join(routerRootPath, dir.name, file));
+                const { route: moduleRoute, router: moduleRouter } = await import('../' + path.posix.join(routerRootPath, dir.name, file));
                 router.use(moduleRoute, moduleRouter);
+                console.log(`router load success : ${file}`);
             }
-            catch{
-                console.log(`router load failed : ${path.join(process.cwd(), routerRootPath, dir.name, file)}`);
+            catch(err){
+                console.log(`router load failed : ${path.posix.join(process.cwd(), routerRootPath, dir.name, file)}`);
+                console.error(err);
             }
         }
     }
