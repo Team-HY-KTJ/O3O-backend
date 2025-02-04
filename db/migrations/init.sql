@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS o3o-database;
-USE o3o-database;
+CREATE DATABASE IF NOT EXISTS your_db_name;
+USE your_db_name;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
