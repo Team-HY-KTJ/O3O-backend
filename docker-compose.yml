@@ -24,10 +24,10 @@ services:
 
   backend:
     # 이미지는 환경 변수로 관리
-    # image: ${REGISTRY_URL}/o3o-backend:${TAG}
-    build:
-      context: ./backend
-      dockerfile: /Dockerfile
+    image: ${REGISTRY_URL}/o3o-backend:${TAG}
+    # build:
+      # context: ./backend
+      # dockerfile: /Dockerfile
     container_name: o3o-backend
     env_file:
       - .env

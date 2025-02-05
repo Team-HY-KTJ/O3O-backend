@@ -3,7 +3,7 @@ import db from '../../db.js';
 
 const route = '/balance';
 const router = express.Router();
-const { DB_TABLENAME } = process.env;
+
 /*
     GET /balance/ranking
 
@@ -43,14 +43,12 @@ const { DB_TABLENAME } = process.env;
     - page: 선택할 페이지
 */
 router.get('/ranking', async (req, res) => {
-    const { guildId, scope='top' , limit=10, page=1 } = req.query;
-    let limit2 = Number(limit);
-    let page2 = Number(page);
+    const { guildId, scope='top' } = req.query;
+    let limit = Number(req.query.limit) || 10;
+    let page = Number(req.query.page) || 1;
     // limit가 100보다 큰 경우
-    if(limit2 > 100) return res.status(422).json({ error: 'Too much request(Reduce the limit)'});
+    if(limit > 100) return res.status(422).json({ error: 'Too much request(Reduce the limit)'});
     // 서버 인원 구하기
-    // const [count] = db.execute(`SELECT COUNT(*) AS count FROM users WHERE server_id = ?`,[guildId]);
-
     const count = await new Promise((resolve, reject) => {
         db.query(`SELECT COUNT(*) AS count FROM users WHERE server_id = ?`,[guildId], (err, results) => {
             if(err) reject(err);
@@ -60,7 +58,7 @@ router.get('/ranking', async (req, res) => {
     if(scope==='top'){
         // user_id, coins 구하기
         const ranking = await new Promise((resolve, reject) => {
-            db.query(`SELECT user_id, balance FROM users WHERE server_id = ? ORDER BY balance DESC LIMIT ?`,[guildId, limit2], (err, results) => {
+            db.query(`SELECT user_id, balance FROM users WHERE server_id = ? ORDER BY balance DESC LIMIT ?`,[guildId, limit], (err, results) => {
                 if(err) reject(err);
                 resolve(results);
             });
@@ -80,7 +78,7 @@ router.get('/ranking', async (req, res) => {
     else if(scope==='all'){
         // user_id, coins 구하기
         const ranking = await new Promise((resolve, reject) => {
-            db.query(`SELECT user_id, balance FROM users WHERE server_id = ? ORDER BY balance DESC LIMIT ? OFFSET ?`,[guildId, limit2, limit2*(page2-1)], (err, results) => {
+            db.query(`SELECT user_id, balance FROM users WHERE server_id = ? ORDER BY balance DESC LIMIT ? OFFSET ?`,[guildId, limit, limit*(page-1)], (err, results) => {
                 if(err) reject(err);
                 resolve(results);
             });
@@ -92,9 +90,9 @@ router.get('/ranking', async (req, res) => {
                 userId: rank.user_id,
                 balance: rank.balance
             })),
-            page: page2,
-            totalPage: Math.ceil(count[0].count/limit2),
-            limit: limit2,
+            page: page,
+            totalPage: Math.ceil(count[0].count/limit),
+            limit: limit,
             totalCount: count[0].count
         }
         // JSON 반환
