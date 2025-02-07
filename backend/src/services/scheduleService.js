@@ -21,7 +21,7 @@ async function createSchedule(scheduleData = { server_id: null, channel_id: null
     if(typeof scheduleData.schedule_time == "string"){
         scheduleData.schedule_time = new Date(scheduleData.schedule_time);
     }
-    else if(typeof scheduleData.schedule_time == "Date"){
+    else if(typeof scheduleData.schedule_time != "Date"){
         console.error("schedule_time type error");
     }
 
@@ -48,12 +48,23 @@ async function readSchedule(scheduleData = { server_id: null, channel_id: null, 
     }
 }
 
-function updateSchedule(){
-
+async function updateSchedule(originData = { server_id: null, channel_id: null, schedule_name: null}, changeData = { schedule_name: null, schedule_time: null, schedule_alarm: null, schedule_description: null }){
+    try{
+        return await scheduleRepository.updateSchedule(originData, changeData);
+    }
+    catch(err){
+        throw new Error("");
+    }
 }
 
-function deleteSchedule(){
-
+async function deleteSchedule(scheduleData = { server_id: null, channel_id: null, schedule_name: null}){
+    try{
+        return await scheduleRepository.deleteSchedule(scheduleData);
+    }
+    catch(err){
+        // throw new Error("");
+        throw err;
+    }
 }
 
 export default { createSchedule, readSchedule, updateSchedule, deleteSchedule};

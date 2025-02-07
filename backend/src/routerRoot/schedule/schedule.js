@@ -39,11 +39,31 @@ router.get('', async (req, res) => {
         res.status(404).json(err);
     }
 });
-// router.patch('',(req, res) => {
-//     const {} = req.body;
-// });
-// router.delete('',(req, res) => {
-//     const {} = req.body;
-// });
+
+router.patch('', async (req, res) => {
+    const { originData, changeData } = req.body;
+
+    try{
+        const results = await scheduleService.updateSchedule(originData, changeData);
+        res.status(200).json(results);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+});
+
+router.delete('', async (req, res) => {
+    const { scheduleData } = req.body;
+
+    try{
+        const results = await scheduleService.deleteSchedule(scheduleData);
+        res.status(200).json(results);
+        console.log("success");
+    }
+    catch(err){
+        console.error("failed", err);
+        res.status(500).json(err);
+    }
+});
 
 export { route, router };

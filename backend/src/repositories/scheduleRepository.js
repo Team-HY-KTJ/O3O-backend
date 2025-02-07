@@ -42,19 +42,13 @@ async function createSchedule(scheduleData = { server_id: null, channel_id: null
 }
 
 async function readScheduleByName(scheduleData = { server_id: null, channel_id: null, schedule_name: null }){
-    // 임시
-    const query = `SELECT * FROM ${dbConfig.tables.schedule} WHERE server_id = ${scheduleData.server_id} AND channel_id = ${scheduleData.channel_id} AND schedule_name = ${scheduleData.schedule_name}`;
-
-    //prepared statements가 보안상 좋긴 한데 schedule_name에 string 입력이 안 되가지고 일단 가림
-    //const query = `SELECT * FROM ${dbConfig.tables.schedule} WHERE server_id = ? AND channel_id = ? AND schedule_name = ?`
-    // const data = [...Object.values(scheduleData)];
+    const query = `SELECT * FROM ${dbConfig.tables.schedule} WHERE server_id = ? AND channel_id = ? AND schedule_name = ?`
+    const data = [...Object.values(scheduleData)];
     
     //let [rows] = await db.execute(query, data); // 이 방식 사용하려면 mysql2/promise로 바꿔야 됨... 바꾸자... 난 async/await가 callback보단 나은거 같애...
-    //console.log(rows);
-    //return [results, fields];
 
     return new Promise((resolve, reject) => {
-        db.query(query/*, data*/, (err, results, fields) => {
+        db.query(query, data, (err, results, fields) => {
             if(err) reject(err);
             else{
                 console.log(query);
@@ -66,12 +60,28 @@ async function readScheduleByName(scheduleData = { server_id: null, channel_id: 
     });
 }
 
-function updateSchedule(){
+function updateSchedule(originData = { server_id: null, channel_id: null, schedule_name: null}, changeData = { schedule_name: null, schedule_time: null, schedule_alarm: null, schedule_description: null }){
+    const query = `UPDATE ${dbConfig.tables.schedule} SET schedule_name = ?, schedule_time = ?, schedule_alarm = ?, schedule_description = ? WHERE server_id = ? AND channel_id = ? AND schedule_name = ?`
+    const data = [...Object.values(changeData), ...Object.values(originData)];
 
+    return new Promise((resolve, reject) => {
+        db.query(query, data, (err, results, fields) => {
+            if(err) reject(err);
+            else resolve(results);
+        });
+    });
 }
 
-function deleteSchedule(){
+function deleteSchedule(scheduleData = { server_id: null, channel_id: null, schedule_name: null}){
+    const query = `DELETE FROM ${dbConfig.tables.schedule} WHERE server_id = ? AND channel_id = ? AND schedule_name = ?`
+    const data = [...Object.values(scheduleData)];
 
+    return new Promise((resolve, reject) => {
+        db.query(query, data, (err, results, fields) => {
+            if(err) reject(err);
+            else resolve(results);
+        });
+    });
 }
 
 export default { createSchedule, readScheduleByName, updateSchedule, deleteSchedule};
